@@ -1,0 +1,65 @@
+# =========================
+# Build directories
+# =========================
+cmake-build-*/
+build/
+out/
+
+# CMake generated files
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+Makefile
+CMakeScripts/
+Testing/
+CTestTestfile.cmake
+_deps/
+
+# Compilation database (optional – remove if you want to track it)
+compile_commands.json
+
+# =========================
+# CLion / IntelliJ files
+# =========================
+.idea/
+*.iws
+*.iml
+
+# =========================
+# Executables / binaries
+# =========================
+*.exe
+*.out
+*.app
+*.dll
+*.so
+*.dylib
+
+# Object files
+*.o
+*.obj
+
+# Static / dynamic libraries
+*.a
+*.lib
+
+# Debug symbols
+*.pdb
+
+# =========================
+# Logs
+# =========================
+*.log
+
+# =========================
+# OS generated files
+# =========================
+.DS_Store
+Thumbs.db
+
+# =========================
+# Temporary files
+# =========================
+*.swp
+*.swo
+*~
