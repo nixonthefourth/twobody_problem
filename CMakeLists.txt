@@ -3,4 +3,6 @@ project(twobody_problem)
 
 set(CMAKE_CXX_STANDARD 20)
 
-add_executable(twobody_problem main.cpp)
+add_executable(twobody_problem main.cpp
+        stellar_object.h
+        Vec2.h)
