@@ -20,4 +20,4 @@ All physical quantities are internally consistent within this scaled system.
 ```
 ## Toolkit
 I have used vanilla C++ 20 with CMake to run cross-platform.
-Library-wise cmath is currently applied for mathematical calculations and SFML is due to be added later for the graphics rendering.
+Library-wise `cmath` is currently applied for mathematical calculations and `SFML` is due to be added later for the graphics rendering. `random` is used to randomise data.

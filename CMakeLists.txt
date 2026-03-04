@@ -9,6 +9,8 @@ add_executable(twobody_problem
         src/physics.cpp
         include/physics.h
         include/stellar_object.h
+        src/verlet.cpp
+        src/verlet.h
 )
 
 target_include_directories(twobody_problem PUBLIC include)
