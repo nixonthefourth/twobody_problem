@@ -7,7 +7,7 @@
 #include "Vec2.h"
 #include "physics.h"
 
-namespace verlet {
+namespace physics::verlet {
     /// @brief Updates the position vector by a given timestep.
     /// @param position Current position vector.
     /// @param velocity Current velocity.
