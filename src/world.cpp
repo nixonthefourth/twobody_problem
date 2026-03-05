@@ -15,7 +15,7 @@
 namespace world {
     void run() {
         // Define celestial objects
-        stellar_object Star(1000, "The Star", Vec2(0.f, 0.f), Vec2(0.f, 0.f));
+        stellar_object Star(1000, "The Star", Vec2(30.f, 30.f), Vec2(0.f, 0.f));
         stellar_object Telex(20, "Planet Telex", Vec2(100.f, 80.f), Vec2(0.f, 0.f));
 
         // Add initial velocity to the planet

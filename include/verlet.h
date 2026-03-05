@@ -24,7 +24,7 @@ namespace physics::verlet {
 
     // Integration steps
     Vec2 update_position(const Vec2& position, const Vec2& velocity, const Vec2& acceleration, float dt);
-    Vec2 update_acceleration(float m, float distance, const Vec2& position);
+    Vec2 update_acceleration(float m, float distance, const Vec2& planet_pos, const Vec2& star_pos);
     Vec2 update_velocity(const Vec2& velocity, const Vec2& init_acceleration, const Vec2& upd_acceleration, float dt);
 
     void update(Vec2& position,

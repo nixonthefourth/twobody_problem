@@ -24,8 +24,8 @@ namespace physics::verlet {
     }
 
     /// @brief Updates acceleration after updated position.
-    Vec2 update_acceleration(float m, float distance, const Vec2& position) {
-        return -1.f * (m / pow(distance, 3)) * position;
+    Vec2 update_acceleration(float m, float distance, const Vec2& planet_pos, const Vec2& star_pos) {
+        return -1.f * (m / pow(distance, 3)) * (planet_pos - star_pos);
     }
 
     /// @brief Updates velocity after acquiring new position and acceleration vectors.
@@ -47,7 +47,7 @@ namespace physics::verlet {
         for (int i = 0; i < 10000; i++) {
             Vec2 new_position     = update_position(position, velocity, acceleration, dt);
             float distance        = physics::find_distance(pos_body_a, new_position);
-            Vec2 new_acceleration = update_acceleration(m, distance, new_position);
+            Vec2 new_acceleration = update_acceleration(m, distance, new_position, pos_body_a);
             Vec2 new_velocity     = update_velocity(velocity, acceleration, new_acceleration, dt);
 
             position     = new_position;
