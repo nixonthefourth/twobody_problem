@@ -17,3 +17,8 @@ add_executable(twobody_problem
 
 target_include_directories(twobody_problem PUBLIC include)
 target_include_directories(twobody_problem PUBLIC src)
+
+# Pass the project root as a compile definition
+target_compile_definitions(twobody_problem PRIVATE
+        PROJECT_ROOT="${CMAKE_SOURCE_DIR}"
+)

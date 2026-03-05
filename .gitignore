@@ -4,6 +4,8 @@
 cmake-build-*/
 build/
 out/
+.venv/
+data/
 
 # CMake generated files
 CMakeFiles/

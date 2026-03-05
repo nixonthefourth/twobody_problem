@@ -7,49 +7,33 @@
 #include "Vec2.h"
 #include "physics.h"
 #include <iostream>
+#include <fstream>
+#include <vector>
+#include <stdexcept>
 
 namespace physics::verlet {
 
-    /// @brief Updates the position vector by a given timestep.
-    /// @param position Current position vector.
-    /// @param velocity Current velocity.
-    /// @param acceleration Current acceleration.
-    /// @param dt Timestep.
-    /// @return Returns a new position at a new timestep.
-    Vec2 update_position(const Vec2& position, const Vec2& velocity, const Vec2& acceleration, float dt) {
-        // Break down equation into components
-        Vec2 velocity_component = velocity * dt;
-        Vec2 acceleration_component = 0.5 * (acceleration * pow(dt, 2));
+    // Module-level storage for orbit snapshots recorded during update()
+    static std::vector<OrbitSnapshot> g_snapshots;
 
+    /// @brief Updates the position vector by a given timestep.
+    Vec2 update_position(const Vec2& position, const Vec2& velocity, const Vec2& acceleration, float dt) {
+        Vec2 velocity_component     = velocity * dt;
+        Vec2 acceleration_component = 0.5f * (acceleration * pow(dt, 2));
         return position + velocity_component + acceleration_component;
     }
 
     /// @brief Updates acceleration after updated position.
-    /// @param m Mass of the non-orbiting body.
-    /// @param distance Distance between two bodies.
-    /// @param position Updated position.
-    /// @return Returns an updated acceleration vector.
     Vec2 update_acceleration(float m, float distance, const Vec2& position) {
-        return -1 * (m / pow(distance, 3)) * position;
+        return -1.f * (m / pow(distance, 3)) * position;
     }
 
-    /// @brief Update velocity after acquiring new position and acceleration vectors.
-    /// @param velocity Current velocity.
-    /// @param init_acceleration Initial acceleration before update.
-    /// @param upd_acceleration Updated acceleration in `update_acceleration()`.
-    /// @param dt Timestep.
-    /// @return Returns an updated velocity vector.
+    /// @brief Updates velocity after acquiring new position and acceleration vectors.
     Vec2 update_velocity(const Vec2& velocity, const Vec2& init_acceleration, const Vec2& upd_acceleration, float dt) {
-        return velocity + 0.5 * (init_acceleration + upd_acceleration) * dt;
+        return velocity + 0.5f * (init_acceleration + upd_acceleration) * dt;
     }
 
-    /// @brief Update function applying all integrators. Use within a loop.
-    /// @param position Current position of the orbiting body.
-    /// @param velocity Current velocity of the orbiting body.
-    /// @param acceleration Current acceleration of the orbiting body.
-    /// @param pos_body_a Position of the centre mass.
-    /// @param dt Timestep.
-    /// @param m Mass of the centre mass celestial body.
+    /// @brief Runs the Velocity Verlet integrator for 1000 steps and records every snapshot.
     void update(Vec2& position,
                 Vec2& velocity,
                 Vec2& acceleration,
@@ -57,30 +41,57 @@ namespace physics::verlet {
                 float dt,
                 float m)
     {
-        for (int i = 0; i < 1000; i++) {
-            // New position
-            Vec2 new_position = update_position(position, velocity, acceleration, dt);
+        g_snapshots.clear();
+        g_snapshots.reserve(1000);
 
-            float distance = physics::find_distance(pos_body_a, new_position);
-
-            // New acceleration
+        for (int i = 0; i < 10000; i++) {
+            Vec2 new_position     = update_position(position, velocity, acceleration, dt);
+            float distance        = physics::find_distance(pos_body_a, new_position);
             Vec2 new_acceleration = update_acceleration(m, distance, new_position);
+            Vec2 new_velocity     = update_velocity(velocity, acceleration, new_acceleration, dt);
 
-            // New velocity
-            Vec2 new_velocity = update_velocity(velocity,
-                acceleration,
-                new_acceleration,
-                dt);
-
-            // Updated values
-            position = new_position;
-            velocity = new_velocity;
+            position     = new_position;
+            velocity     = new_velocity;
             acceleration = new_acceleration;
 
+            g_snapshots.push_back({ i,
+                position.x,     position.y,
+                velocity.x,     velocity.y,
+                acceleration.x, acceleration.y });
+
             std::cout << "=================================================" << std::endl;
-            std::cout << "Current Position: " << position << std::endl;
-            std::cout << "Current Velocity: " << velocity << std::endl;
+            std::cout << "Step " << i << std::endl;
+            std::cout << "Current Position:     " << position     << std::endl;
+            std::cout << "Current Velocity:     " << velocity     << std::endl;
             std::cout << "Current Acceleration: " << acceleration << std::endl;
         }
+    }
+
+    /// @brief Writes recorded orbit snapshots to a CSV file.
+    /// @param filename Target file path (e.g. "orbit_data.csv").
+    void export_csv(const std::string& filename) {
+        if (g_snapshots.empty()) {
+            std::cerr << "export_csv: no snapshot data – call update() first." << std::endl;
+            return;
+        }
+
+        std::ofstream file(filename);
+        if (!file.is_open()) {
+            throw std::runtime_error("export_csv: cannot open file: " + filename);
+        }
+
+        // Header row
+        file << "step,x,y,vx,vy,ax,ay\n";
+
+        for (const auto& s : g_snapshots) {
+            file << s.step << ","
+                 << s.x    << "," << s.y
+                 << ","    << s.vx << "," << s.vy
+                 << ","    << s.ax << "," << s.ay
+                 << "\n";
+        }
+
+        file.close();
+        std::cout << "Orbit data exported to: " << filename << std::endl;
     }
 }
