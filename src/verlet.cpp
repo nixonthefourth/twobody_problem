@@ -42,7 +42,7 @@ namespace physics::verlet {
                 float m)
     {
         g_snapshots.clear();
-        g_snapshots.reserve(1000);
+        g_snapshots.reserve(10000);
 
         for (int i = 0; i < 10000; i++) {
             Vec2 new_position     = update_position(position, velocity, acceleration, dt);
