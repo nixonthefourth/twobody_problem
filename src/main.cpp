@@ -1,7 +1,7 @@
-#include <iostream>
-#include <cmath>
+#include "world.h"
 
 int main() {
-    std::cout << "Hello, World!" << std::endl;
+    world::run();
+
     return 0;
 }

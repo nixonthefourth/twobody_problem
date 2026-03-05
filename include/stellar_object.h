@@ -21,11 +21,12 @@ public: // Public accessors
     // Getters
     float get_mass() const { return mass; } // Get mass
     const std::string& get_name() const { return name; } // Get name by reference
-    const Vec2& get_position() const { return position; } // Get current position by reference
-    const Vec2& get_velocity() const { return velocity; } // Get current velocity by reference
+    Vec2& get_position() { return position; } // Get mutable position by reference
+    Vec2& get_velocity() { return velocity; } // Get mutable velocity by reference
+    const Vec2& get_position() const { return position; } // Get const position by reference
+    const Vec2& get_velocity() const { return velocity; } // Get const velocity by reference
 
     // Setters
-    void set_name(const std::string& n) { if (n.length() > 0) name = n; } // Set Name
     void set_position(const Vec2& pos) { position = pos; } // Set Position
     void set_velocity(const Vec2& v) { velocity = v; } // Set Velocity
 };

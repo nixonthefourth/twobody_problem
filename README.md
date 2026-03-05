@@ -14,9 +14,13 @@ All physical quantities are internally consistent within this scaled system.
     | physics.h
     | stellar_object.h
     | Vec2.h
+    | verlet.h
+    | world.h
 / src
     | main.cpp
     | physics.cpp
+    | verlet.cpp
+    | world.cpp
 ```
 ## Toolkit
 I have used vanilla C++ 20 with CMake to run cross-platform.

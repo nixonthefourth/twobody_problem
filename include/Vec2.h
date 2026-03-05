@@ -4,6 +4,7 @@
 
 #ifndef TWOBODY_PROBLEM_VEC2_H
 #define TWOBODY_PROBLEM_VEC2_H
+#include <iostream>
 
 /// @brief Creates a position vector of a stellar object
 /// @param x Horizontal vector component
@@ -95,6 +96,8 @@ struct Vec2 {
         y += other.y;
         return *this;
     }
+
+
 };
 
 /// @brief Reverse operand positioning through accessing `*` operator.
@@ -103,6 +106,11 @@ struct Vec2 {
 /// @return Returns multiplied value of Vec2 as `k * (i, j)`.
 inline Vec2 operator*(float scalar, const Vec2& v) {
     return Vec2(v.x * scalar, v.y * scalar);
+}
+
+/// @brief Stream output for Vec2, e.g. std::cout << position.
+inline std::ostream& operator<<(std::ostream& os, const Vec2& v) {
+    return os << "(" << v.x << ", " << v.y << ")";
 }
 
 #endif //TWOBODY_PROBLEM_VEC2_H

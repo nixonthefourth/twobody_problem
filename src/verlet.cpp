@@ -2,12 +2,14 @@
 // Created by Mykyta Khomiakov on 04/03/2026.
 //
 
-#include "verlet.h"
+#include "../include/verlet.h"
 #include <cmath>
 #include "Vec2.h"
 #include "physics.h"
+#include <iostream>
 
 namespace physics::verlet {
+
     /// @brief Updates the position vector by a given timestep.
     /// @param position Current position vector.
     /// @param velocity Current velocity.
@@ -55,23 +57,30 @@ namespace physics::verlet {
                 float dt,
                 float m)
     {
-        // New position
-        Vec2 new_position = update_position(position, velocity, acceleration, dt);
+        for (int i = 0; i < 1000; i++) {
+            // New position
+            Vec2 new_position = update_position(position, velocity, acceleration, dt);
 
-        float distance = physics::find_distance(pos_body_a, new_position);
+            float distance = physics::find_distance(pos_body_a, new_position);
 
-        // New acceleration
-        Vec2 new_acceleration = update_acceleration(m, distance, new_position);
+            // New acceleration
+            Vec2 new_acceleration = update_acceleration(m, distance, new_position);
 
-        // New velocity
-        Vec2 new_velocity = update_velocity(velocity,
-            acceleration,
-            new_acceleration,
-            dt);
+            // New velocity
+            Vec2 new_velocity = update_velocity(velocity,
+                acceleration,
+                new_acceleration,
+                dt);
 
-        // Updated values
-        position = new_position;
-        velocity = new_velocity;
-        acceleration = new_acceleration;
+            // Updated values
+            position = new_position;
+            velocity = new_velocity;
+            acceleration = new_acceleration;
+
+            std::cout << "=================================================" << std::endl;
+            std::cout << "Current Position: " << position << std::endl;
+            std::cout << "Current Velocity: " << velocity << std::endl;
+            std::cout << "Current Acceleration: " << acceleration << std::endl;
+        }
     }
 }
