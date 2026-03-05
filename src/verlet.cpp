@@ -18,7 +18,7 @@ namespace physics::verlet {
 
     /// @brief Updates the position vector by a given timestep.
     Vec2 update_position(const Vec2& position, const Vec2& velocity, const Vec2& acceleration, float dt) {
-        Vec2 velocity_component     = velocity * dt;
+        Vec2 velocity_component = velocity * dt;
         Vec2 acceleration_component = 0.5f * (acceleration * pow(dt, 2));
         return position + velocity_component + acceleration_component;
     }
@@ -33,7 +33,7 @@ namespace physics::verlet {
         return velocity + 0.5f * (init_acceleration + upd_acceleration) * dt;
     }
 
-    /// @brief Runs the Velocity Verlet integrator for 1000 steps and records every snapshot.
+    /// @brief Runs the Velocity Verlet integrator for 10000 steps and records every snapshot.
     void update(Vec2& position,
                 Vec2& velocity,
                 Vec2& acceleration,
@@ -45,18 +45,18 @@ namespace physics::verlet {
         g_snapshots.reserve(10000);
 
         for (int i = 0; i < 10000; i++) {
-            Vec2 new_position     = update_position(position, velocity, acceleration, dt);
-            float distance        = physics::find_distance(pos_body_a, new_position);
+            Vec2 new_position = update_position(position, velocity, acceleration, dt);
+            float distance = physics::find_distance(pos_body_a, new_position);
             Vec2 new_acceleration = update_acceleration(m, distance, new_position, pos_body_a);
-            Vec2 new_velocity     = update_velocity(velocity, acceleration, new_acceleration, dt);
+            Vec2 new_velocity = update_velocity(velocity, acceleration, new_acceleration, dt);
 
-            position     = new_position;
-            velocity     = new_velocity;
+            position = new_position;
+            velocity = new_velocity;
             acceleration = new_acceleration;
 
             g_snapshots.push_back({ i,
-                position.x,     position.y,
-                velocity.x,     velocity.y,
+                position.x, position.y,
+                velocity.x, velocity.y,
                 acceleration.x, acceleration.y });
         }
     }

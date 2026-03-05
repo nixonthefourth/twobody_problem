@@ -2,10 +2,7 @@
 plot_orbit.py
 Usage: python3 plot_orbit.py <csv_file>
 
-Reads the orbit CSV exported by the C++ Verlet integrator and produces:
-  1. orbit_path.png    — XY orbital trajectory
-  2. speed_over_time.png — scalar speed at each timestep
-  3. energy_over_time.png — total mechanical energy (should be ~constant for a stable orbit)
+Reads the orbit CSV exported by the C++ Verlet integrator and produces orbit_path.png — XY orbital trajectory
 """
 
 import sys

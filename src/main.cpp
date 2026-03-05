@@ -2,6 +2,5 @@
 
 int main() {
     world::run();
-
     return 0;
 }

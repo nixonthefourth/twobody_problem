@@ -97,7 +97,6 @@ struct Vec2 {
         return *this;
     }
 
-
 };
 
 /// @brief Reverse operand positioning through accessing `*` operator.
@@ -109,6 +108,7 @@ inline Vec2 operator*(float scalar, const Vec2& v) {
 }
 
 /// @brief Stream output for Vec2, e.g. std::cout << position.
+/// @return Returns a value of Vec2 inc std::cout fashion
 inline std::ostream& operator<<(std::ostream& os, const Vec2& v) {
     return os << "(" << v.x << ", " << v.y << ")";
 }

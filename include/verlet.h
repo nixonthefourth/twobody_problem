@@ -13,7 +13,7 @@ namespace physics::verlet {
 
     /// @brief Stores a single timestep snapshot of the orbiting body.
     struct OrbitSnapshot {
-        int   step;
+        int step;
         float x;
         float y;
         float vx;
