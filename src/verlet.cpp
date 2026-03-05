@@ -58,12 +58,6 @@ namespace physics::verlet {
                 position.x,     position.y,
                 velocity.x,     velocity.y,
                 acceleration.x, acceleration.y });
-
-            std::cout << "=================================================" << std::endl;
-            std::cout << "Step " << i << std::endl;
-            std::cout << "Current Position:     " << position     << std::endl;
-            std::cout << "Current Velocity:     " << velocity     << std::endl;
-            std::cout << "Current Acceleration: " << acceleration << std::endl;
         }
     }
 
