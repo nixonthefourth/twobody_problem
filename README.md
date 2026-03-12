@@ -26,37 +26,40 @@ pip install pandas matplotlib numpy
 ```
 TwoBody_Problem/
 ├── docs/
-    ├── main.tex
-    ├── main.pdf
-    ├── figures/
-    │   └── problem_setup.png
-    └── sections/
-        ├── formulae.tex
-        ├── problem_setup.tex
-        ├── distance.tex
-        ├── grav_acceleration.tex
-        ├── orbital_velocities.tex
-        ├── velocity_direction.tex
-        ├── total_energy.tex
-        └── verlet.tex
-        
-│
+│   ├── main.tex
+│   ├── main.pdf
+│   ├── figures/
+│   │   └── problem_setup.png
+│   └── sections/
+│       ├── formulae.tex
+│       ├── problem_setup.tex
+│       ├── distance.tex
+│       ├── grav_acceleration.tex
+│       ├── orbital_velocities.tex
+│       ├── velocity_direction.tex
+│       ├── total_energy.tex
+│       └── verlet.tex
+│        
 ├── include/
 │   ├── Vec2.h
 │   ├── stellar_object.h
 │   ├── physics.h
 │   ├── verlet.h
 │   └── world.h
+│
 ├── src/
 │   ├── main.cpp
 │   ├── physics.cpp
 │   ├── verlet.cpp
 │   └── world.cpp
+│
 ├── scripts/
 │   ├── plot_orbit.py
 │   └── __init__.py
-├── data/                  # auto-created on first run
+│
+├── data/   # auto-created on first run
 │   └── orbit_data.csv
+│
 └── CMakeLists.txt
 ```
 
