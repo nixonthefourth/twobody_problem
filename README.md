@@ -8,7 +8,7 @@ A C++ n-body gravitational simulator using the Velocity Verlet integration metho
 
 | Tool | Version | Purpose |
 |------|---------|---------|
-| C++ compiler | C++17 or later | Build the simulation (`g++` or `clang++`) |
+| C++ compiler | C++20 or later | Build the simulation (`g++` or `clang++`) |
 | CMake | 3.15+ | Build system |
 | Python | 3.8+ | Orbit plotting |
 | pip packages | — | `pandas`, `matplotlib`, `numpy` |
@@ -25,6 +25,22 @@ pip install pandas matplotlib numpy
 
 ```
 TwoBody_Problem/
+├── docs/
+    ├── main.tex
+    ├── main.pdf
+    ├── figures/
+    │   └── problem_setup.png
+    └── sections/
+        ├── formulae.tex
+        ├── problem_setup.tex
+        ├── distance.tex
+        ├── grav_acceleration.tex
+        ├── orbital_velocities.tex
+        ├── velocity_direction.tex
+        ├── total_energy.tex
+        └── verlet.tex
+        
+│
 ├── include/
 │   ├── Vec2.h
 │   ├── stellar_object.h
