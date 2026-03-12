@@ -51,7 +51,7 @@ namespace physics {
     /// @return Returns the randomised float value.
     float choose_vel(float escape_vel) {
         static std::mt19937 gen(std::random_device{}());
-        std::uniform_real_distribution<float> dis(0.f, escape_vel);
+        std::uniform_real_distribution<float> dis(0.5, escape_vel);
 
         return dis(gen);
     }
