@@ -1,0 +1,27 @@
+\section{Velocity Direction}
+
+\subsection{Setup}
+
+In order to calculate the vector velocity required further in the Vector Verlet method, we need to make a few manipulations to the vector itself. The current radius vector of the orbiting planet is $\vec{r} = (100i + 75j)$. In order to calculate the unit vector, we have to make it perpendicular. Hence why: $\vec{r_p} = (75i + 100j)$.
+
+\subsection{Unit Vector Calculation}
+
+\begin{equation}
+\mathbf{\hat{r_p}} = \frac{-75i + 100j}{r} \text{, where $r$ is 125}.
+\end{equation}
+
+Hence why, the unit vector of the initial perpendicular velocity would be: $-0.6i + 0.8j$.
+
+\subsection{Velocity}
+
+Step 1, write out the equation:
+
+\begin{equation}
+\mathbf{\vec{v}} = v * \hat{r_p}
+\end{equation}
+
+Step 2, substitute values:
+
+\begin{equation}
+\mathbf{\vec{v}} = 2.8 * (-0.6i + 0.8j) = -1.68i + 2.24j
+\end{equation}

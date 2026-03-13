@@ -29,7 +29,9 @@ TwoBody_Problem/
 │   ├── main.tex
 │   ├── main.pdf
 │   ├── figures/
-│   │   └── problem_setup.png
+│   ├── square.png
+│   ├── problem_setup.png
+│   │
 │   └── sections/
 │       ├── formulae.tex
 │       ├── problem_setup.tex

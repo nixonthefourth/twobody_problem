@@ -1,0 +1,62 @@
+\section{Orbital Velocities}
+This part determines what kind of velocity the orbiting object has. It's worth noting, that in a two-body setup, the velocity of the center mass can be disregarded. Based on the values produces, we can create a table of velocities and deduce the most appropirate for our setup. The actual software chooses the results within the uniform real distribution in order to give a variety of results.
+
+\subsection{Circular Velocity}
+
+Step 1, write out the equation:
+
+\begin{equation}
+\mathbf{v_c} = \sqrt{\frac{GM}{r}}
+\end{equation}
+
+Step 2, substitute values:
+
+\begin{equation}
+\mathbf{v_c} = \sqrt{\frac{1 * 1000}{125}}
+\end{equation}
+
+Step 3, result:
+
+\begin{equation}
+\mathbf{v_c} = 2\sqrt{2}
+\end{equation}
+
+\subsection{Escape Velocity}
+
+Step 1, write out the equation:
+
+\begin{equation}
+\mathbf{v_e} = \sqrt{\frac{2GM}{r}}
+\end{equation}
+
+Step 2, substitute values:
+
+\begin{equation}
+\mathbf{v_e} = \sqrt{\frac{2 * 1000}{125}}
+\end{equation}
+
+Step 3, result:
+
+\begin{equation}
+\mathbf{v_e} = 4
+\end{equation}
+
+Hence, the velocity table can now be produced.
+
+\subsection{Velocity Table}
+\begin{tabular}{l c}
+\toprule
+Velocities $v$ & Orbital Behaviour \\
+\midrule
+$0$ & Fall in the center mass \\
+$0< v < 2\sqrt{2}$ & Elliptical Orbit \\
+$2\sqrt{2}$ & Circular Orbit \\
+$2.83 < v < 4$ & Elliptical Orbit \\
+$v = 4$ & Parabolic Orbit \\
+$v > 4$ & Hyperbolic Escape \\
+\bottomrule
+\end{tabular}
+
+\vspace{1cm}
+
+Let $v=2.8$, hence the orbit is \underline{elliptical}.

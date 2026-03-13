@@ -4,11 +4,17 @@
 \usepackage{amssymb}
 \usepackage{mathtools}
 \usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{float}
+\usepackage{placeins}
+\usepackage{microtype}
+
+\raggedbottom
 
 \renewcommand{\familydefault}{\sfdefault}
 
 \title{The Two Body Problem}
-\author{Mykyta `Nick` Khomiakov}
+\author{Mykyta 'Nick' Khomiakov}
 \date{\today}
 
 \begin{document}
@@ -17,7 +23,12 @@
 \tableofcontents
 \newpage
 
-\include{sections/formulae}
-\include{sections/problem_setup}
+\input{sections/formulae}
+\input{sections/problem_setup}
+\input{sections/distance}
+\input{sections/grav_acceleration}
+\FloatBarrier
+\input{sections/orbital_velocities}
+\input{sections/velocity_direction}
 
 \end{document}
