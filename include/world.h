@@ -6,6 +6,7 @@
 #define TWOBODY_PROBLEM_WORLD_H
 
 namespace world {
+    // Runs main program
     void run();
 }
 
