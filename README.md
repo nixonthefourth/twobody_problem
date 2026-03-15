@@ -19,10 +19,8 @@ Install Python dependencies:
 pip install pandas matplotlib numpy
 ```
 
-Please see the ```
-documents/main.pdf
-```
-for the mathematical explanation of the numerical principles.
+Please see the `documents/main.pdf` for the mathematical explanation of the numerical principles.
+
 ---
 
 ## Project Structure
