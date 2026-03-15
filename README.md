@@ -19,6 +19,10 @@ Install Python dependencies:
 pip install pandas matplotlib numpy
 ```
 
+Please see the ```
+documents/main.pdf
+```
+for the mathematical explanation of the numerical principles.
 ---
 
 ## Project Structure
@@ -39,7 +43,6 @@ TwoBody_Problem/
 │       ├── grav_acceleration.tex
 │       ├── orbital_velocities.tex
 │       ├── velocity_direction.tex
-│       ├── total_energy.tex
 │       └── verlet.tex
 │        
 ├── include/

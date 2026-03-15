@@ -1,0 +1,24 @@
+\section{Sumplectic Integrators}
+\subsection{Velocity Verlet Algorithm}
+
+The algorithm works by the principles of updated position, acceleration and velocity to change the position of an object both in 2D and 3D space with energy conserved.
+
+\subsection{Formulae}
+\subsection{Position Update}
+\begin{equation}
+\mathbf{\vec{r_{n+1}}} = \vec{r_n} + \vec{v}*dt + \frac{1}{2}*\vec{a_n}*dt^2
+\end{equation}
+
+\subsection{Acceleration Update}
+\begin{equation}
+\mathbf{\vec{a_{n+1}}} = -G * \frac{m}{|\vec{r^3}|} * (\vec{r_{planet}} - \vec{r_{star}})
+\end{equation}
+
+\subsection{Velocity Update}
+\begin{equation}
+\mathbf{\vec{v_{n+1}}} = \vec{v_n} + \frac{(\vec{a_n} + \vec{a_{n+1}})*dt}{2}
+\end{equation}
+
+\subsection{How this works}
+
+After following this algorithm over a chosen timestep (which could be in thousands and millions), we will see a consistent update of the position, acceleration and velocity with the energy conserved over a chosen orbit of initially defined velocity.
