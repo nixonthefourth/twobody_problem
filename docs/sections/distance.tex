@@ -1,4 +1,16 @@
 \section{Find Distance}
-\begin{equation}
-\mathbf{r} = \sqrt{100^2 + 75^2} = 125
-\end{equation}
+
+Using the initial positions defined in the Problem Setup – star at $\vec{r}_\star = (0,\,0)$ and planet at $\vec{r}_p = (100,\,75)$, the initial separation $r$ is computed as:
+
+\begin{align}
+r &= \sqrt{(x_p - x_\star)^2 + (y_p - y_\star)^2} \\
+  &= \sqrt{(100 - 0)^2 + (75 - 0)^2} \\
+  &= \sqrt{100^2 + 75^2} \\
+  &= \sqrt{10000 + 5625} \\
+  &= \sqrt{15625} \\
+  &= 125
+\end{align}
+
+The initial separation between the star and planet is therefore $r = 125$ (in simulation units). This value feeds directly into the gravitational acceleration calculation, the escape velocity, and the assignment of the initial orbital velocity direction, all of which follow in subsequent sections.
+
+It is worth noting that this distance is recomputed at every timestep of the Velocity Verlet integrator, since the planet's position changes continuously. The formula used remains identical; only the current coordinates of the planet are substituted.

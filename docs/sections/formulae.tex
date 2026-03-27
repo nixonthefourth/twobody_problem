@@ -1,76 +1,93 @@
 \section{Formulae}
 
+This section collects and derives all physical equations used in the simulation.
+
 \subsection{Planetary Position}
+
+The position of any body in the simulation is represented as a two-component vector:
+
 \begin{equation}
-\mathbf{\vec{r}} = (x, y)
+\vec{r} = (x,\; y)
 \end{equation}
 
-\subsection{Distance}
+\subsection{Distance Between Two Bodies}
+
+The scalar separation $|\vec{r}|$ between the star at position $\vec{r}_\star$ and the planet at position $\vec{r}_p$ is given by the Euclidean norm of their displacement:
+
 \begin{equation}
-\mathbf{|r|} = \sqrt{x^2 + y^2}
+|\vec{r}| = \sqrt{(x_p - x_\star)^2 + (y_p - y_\star)^2}
 \end{equation}
+
+This is the standard Pythagorean formula extended to vector subtraction, and reduces to $\sqrt{x^2 + y^2}$ when the star is fixed at the origin.
 
 \subsection{Two-Body Gravitational Acceleration}
-\begin{equation}
-\mathbf{\vec{a}} = -\frac{GM}{|r^3|}\vec{r}
-\end{equation}
 
-Derived from Newton's Gravitational Attraction and the Law of Acceleration.
+The gravitational acceleration experienced by the planet due to the star is derived from Newton's Law of Universal Gravitation and his Second Law of Motion.
 
-Here is Newton's Law of Gravitational Attraction:
+Newton's Law of Universal Gravitation states:
 
 \begin{equation}
-\mathbf{\vec{F}} = G\frac{m_1 m_2}{|\vec{r}^3|}\vec{r}
+\vec{F} = G\,\frac{m_1\,m_2}{|\vec{r}|^3}\,\vec{r}
 \end{equation}
 
-And here is the Second Law of Motion.
+where $\vec{r} = \vec{r}_p - \vec{r}_\star$ is the displacement vector from the star to the planet. Newton's Second Law gives:
 
 \begin{equation}
-\mathbf{\vec{F}} = m\vec{a}
+\vec{F} = m\,\vec{a}
 \end{equation}
 
-If we combine these two, we will have an interesting derivation.
+Equating these and letting $m_1 = M$ (star mass) and $m_2 = m$ (planet mass):
 
-Assume $m_1$ is $M$.
+\begin{align}
+m\,\vec{a} &= G\,\frac{M\,m}{|\vec{r}|^3}\,\vec{r} \\[6pt]
+\vec{a} &= G\,\frac{M}{|\vec{r}|^3}\,\vec{r}
+\end{align}
 
-Step 1:
+The planet mass $m$ cancels exactly, confirming that the orbital dynamics are independent of the orbiting body's mass. Since gravity is attractive — the force acts \emph{toward} the star, opposite to the direction of $\vec{r}$ — a negative sign is introduced:
 
 \begin{equation}
-m\vec{a} = G\frac{M m}{|\vec{r}^3|}\vec{r}
+\boxed{\vec{a} = -\frac{GM}{|\vec{r}|^3}\,\vec{r}}
 \end{equation}
 
-Step 2:
+With $G = 1$, this simplifies to $\vec{a} = -\dfrac{M}{|\vec{r}|^3}\,\vec{r}$.
+
+\subsection{Specific Orbital Energy}
+
+The specific orbital energy $\varepsilon$ (energy per unit mass of the planet) determines the type of trajectory:
 
 \begin{equation}
-\mathbf{\vec{a}} = G\frac{Mm}{|\vec{r^3}|m}\vec{r}
+\varepsilon = \frac{v^2}{2} - \frac{GM}{r}
 \end{equation}
 
-The force $\vec{F}$ points to the radial vector, the gravity is attractive.
-
-Hence why:
+With $G = 1$ and using $M$ for the star's mass:
 
 \begin{equation}
-\mathbf{\vec{a}} = -\frac{GM}{|r^3|}\vec{r}
+\varepsilon = \frac{v^2}{2} - \frac{M}{r}
 \end{equation}
 
-\subsection{Energy}
-\begin{equation}
-\mathbf{\epsilon} = \frac{v^2}{2} - \frac{\mu}{r}
-\end{equation}
-
-However $\mu$ is switched to $M$ due to the center mass being the object system is attracted to. Hence why:
-
-\begin{equation}
-\mathbf{\epsilon} = \frac{v^2}{2} - \frac{M}{r}
-\end{equation}
+The sign of $\varepsilon$ classifies the orbit:
+\begin{itemize}
+    \item $\varepsilon < 0$: bound orbit (elliptical or circular)
+    \item $\varepsilon = 0$: parabolic trajectory (marginally unbound)
+    \item $\varepsilon > 0$: hyperbolic escape
+\end{itemize}
 
 \subsection{Orbital Velocities}
-\subsubsection{Circular}
+
+\subsubsection{Circular Orbital Velocity}
+
+A perfectly circular orbit occurs when the gravitational centripetal acceleration exactly balances the required centripetal acceleration $v^2/r$:
+
 \begin{equation}
-\mathbf{v_c} = \sqrt{\frac{GM}{r}}
+\frac{v_c^2}{r} = \frac{GM}{r^2} \implies v_c = \sqrt{\frac{GM}{r}}
 \end{equation}
 
-\subsubsection{Escape}
+\subsubsection{Escape Velocity}
+
+The escape velocity is the minimum speed required for the planet to escape the star's gravitational field, i.e. the speed at which $\varepsilon = 0$:
+
 \begin{equation}
-\mathbf{v_e} = \sqrt{\frac{2GM}{r}}
+\frac{v_e^2}{2} = \frac{GM}{r} \implies v_e = \sqrt{\frac{2GM}{r}}
 \end{equation}
+
+Note that $v_e = \sqrt{2}\,v_c$: escape velocity is always $\sqrt{2}$ times the circular velocity at the same radius.

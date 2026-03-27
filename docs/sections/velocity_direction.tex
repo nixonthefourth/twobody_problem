@@ -1,27 +1,56 @@
 \section{Velocity Direction}
 
-\subsection{Setup}
+Choosing an appropriate \emph{direction} for the initial velocity is just as important as choosing its magnitude. If the velocity were directed radially (i.e., along the line joining the star and planet), the planet would simply fall toward or away from the star. For an orbit to form, the velocity must have a component perpendicular to the radial direction.
 
-In order to calculate the vector velocity required further in the Velocity Verlet method, we need to make a few manipulations to the vector itself. The current radius vector of the orbiting planet is $\vec{r} = (100i + 75j)$. In order to calculate the unit vector, we have to make it perpendicular. Hence why: $\vec{r_p} = (75i + 100j)$.
+In two dimensions, the natural choice is to set the initial velocity entirely perpendicular to the radius vector. This gives the planet the best chance of entering a stable, closed orbit.
 
-\subsection{Unit Vector Calculation}
+\subsection{The Radius Vector}
 
-\begin{equation}
-\mathbf{\hat{r_p}} = \frac{-75i + 100j}{r} \text{, where $r$ is 125}.
-\end{equation}
-
-Hence why, the unit vector of the initial perpendicular velocity would be: $-0.6i + 0.8j$.
-
-\subsection{Velocity}
-
-Step 1, write out the equation:
+Using the initial positions from the Problem Setup, the displacement vector from the star to the planet is:
 
 \begin{equation}
-\mathbf{\vec{v}} = v * \hat{r_p}
+\vec{r} = \vec{r}_p - \vec{r}_\star = (100 - 0)\,\hat{\mathbf{i}} + (75 - 0)\,\hat{\mathbf{j}} = 100\,\hat{\mathbf{i}} + 75\,\hat{\mathbf{j}}
 \end{equation}
 
-Step 2, substitute values:
+with magnitude $r = |\vec{r}| = 125$, as computed in the Find Distance section.
+
+\subsection{Constructing the Perpendicular Vector}
+
+In two dimensions, a vector perpendicular to $(x, y)$ is obtained by rotating it $90°$ counter-clockwise, yielding $(-y, x)$. Applying this to $\vec{r}$:
 
 \begin{equation}
-\mathbf{\vec{v}} = 2.8 * (-0.6i + 0.8j) = -1.68i + 2.24j
+\vec{r}_\perp = -75\,\hat{\mathbf{i}} + 100\,\hat{\mathbf{j}}
 \end{equation}
+
+One can verify perpendicularity by checking the dot product:
+
+\begin{equation}
+\vec{r} \cdot \vec{r}_\perp = (100)(-75) + (75)(100) = -7500 + 7500 = 0 \checkmark
+\end{equation}
+
+\subsection{Computing the Unit Perpendicular Vector}
+
+To obtain a unit vector in the perpendicular direction, divide $\vec{r}_\perp$ by its magnitude (which equals $r$, since rotation preserves length):
+
+\begin{equation}
+\hat{r}_\perp = \frac{\vec{r}_\perp}{|\vec{r}_\perp|} = \frac{-75\,\hat{\mathbf{i}} + 100\,\hat{\mathbf{j}}}{125} = -0.6\,\hat{\mathbf{i}} + 0.8\,\hat{\mathbf{j}}
+\end{equation}
+
+This is implemented in the simulation code via the \texttt{Vec2::perpendicular()} method combined with division by the scalar distance.
+
+\subsection{Assigning the Initial Velocity Vector}
+
+The initial velocity vector is then the chosen scalar speed $v_0$ multiplied by the unit perpendicular:
+
+\begin{equation}
+\vec{v}_0 = v_0 \cdot \hat{r}_\perp
+\end{equation}
+
+Substituting $v_0 = 2.8$ for the worked example:
+
+\begin{align}
+\vec{v}_0 &= 2.8 \times \left(-0.6\,\hat{\mathbf{i}} + 0.8\,\hat{\mathbf{j}}\right) \\
+          &= -1.68\,\hat{\mathbf{i}} + 2.24\,\hat{\mathbf{j}}
+\end{align}
+
+The planet therefore begins moving up and to the left, perpendicular to the line joining it to the star. Under the star's gravitational pull, this initial velocity is gradually curved into the orbital trajectory that the Velocity Verlet integrator tracks over subsequent timesteps.

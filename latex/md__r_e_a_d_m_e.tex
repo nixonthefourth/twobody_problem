@@ -1,0 +1,191 @@
+\chapter{Two-\/\+Body Problem — Gravitational Orbit Simulator }
+\hypertarget{md__r_e_a_d_m_e}{}\label{md__r_e_a_d_m_e}\index{Two-\/Body Problem — Gravitational Orbit Simulator@{Two-\/Body Problem — Gravitational Orbit Simulator}}
+\label{md__r_e_a_d_m_e_autotoc_md0}%
+\Hypertarget{md__r_e_a_d_m_e_autotoc_md0}%
+
+
+A C++ n-\/body gravitational simulator using the Velocity Verlet integration method. Simulates a planet orbiting a star, exports trajectory data to CSV, and plots the results via Python.
+
+\DoxyHorRuler{0}
+\hypertarget{md__r_e_a_d_m_e_autotoc_md2}{}\doxysection{\texorpdfstring{Prerequisites}{Prerequisites}}\label{md__r_e_a_d_m_e_autotoc_md2}
+
+\begin{DoxyTable}{3}{}{}{1}
+\SetCell{c,bg=\tableheadbgcolor,font=\bfseries}Tool  &\SetCell{c,bg=\tableheadbgcolor,font=\bfseries}Version  &\SetCell{c,bg=\tableheadbgcolor,font=\bfseries}Purpose  \\
+C++ compiler  &C++20 or later  &Build the simulation ({\ttfamily g++} or {\ttfamily clang++})  \\
+CMake  &3.\+15+  &Build system  \\
+Python  &3.\+8+  &Orbit plotting  \\
+pip packages  &—  &{\ttfamily pandas}, {\ttfamily matplotlib}, {\ttfamily numpy}  \\
+\end{DoxyTable}
+
+
+Install Python dependencies:\+
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{pip\ install\ pandas\ matplotlib\ numpy}
+
+\end{DoxyCode}
+
+
+Please see the {\ttfamily docs/\+main.\+pdf} for the mathematical explanation of the numerical principles.
+
+\DoxyHorRuler{0}
+\hypertarget{md__r_e_a_d_m_e_autotoc_md4}{}\doxysection{\texorpdfstring{Project Structure}{Project Structure}}\label{md__r_e_a_d_m_e_autotoc_md4}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{TwoBody\_Problem/}
+\DoxyCodeLine{├──\ docs/}
+\DoxyCodeLine{│\ \ \ ├──\ main.tex}
+\DoxyCodeLine{│\ \ \ ├──\ main.pdf}
+\DoxyCodeLine{│\ \ \ ├──\ figures/}
+\DoxyCodeLine{│\ \ \ ├──\ square.png}
+\DoxyCodeLine{│\ \ \ ├──\ problem\_setup.png}
+\DoxyCodeLine{│\ \ \ │}
+\DoxyCodeLine{│\ \ \ └──\ sections/}
+\DoxyCodeLine{│\ \ \ \ \ \ \ ├──\ formulae.tex}
+\DoxyCodeLine{│\ \ \ \ \ \ \ ├──\ problem\_setup.tex}
+\DoxyCodeLine{│\ \ \ \ \ \ \ ├──\ distance.tex}
+\DoxyCodeLine{│\ \ \ \ \ \ \ ├──\ grav\_acceleration.tex}
+\DoxyCodeLine{│\ \ \ \ \ \ \ ├──\ orbital\_velocities.tex}
+\DoxyCodeLine{│\ \ \ \ \ \ \ ├──\ velocity\_direction.tex}
+\DoxyCodeLine{│\ \ \ \ \ \ \ └──\ verlet.tex}
+\DoxyCodeLine{│\ \ \ \ \ \ \ \ }
+\DoxyCodeLine{├──\ include/}
+\DoxyCodeLine{│\ \ \ ├──\ Vec2.h}
+\DoxyCodeLine{│\ \ \ ├──\ stellar\_object.h}
+\DoxyCodeLine{│\ \ \ ├──\ physics.h}
+\DoxyCodeLine{│\ \ \ ├──\ verlet.h}
+\DoxyCodeLine{│\ \ \ └──\ world.h}
+\DoxyCodeLine{│}
+\DoxyCodeLine{├──\ src/}
+\DoxyCodeLine{│\ \ \ ├──\ main.cpp}
+\DoxyCodeLine{│\ \ \ ├──\ physics.cpp}
+\DoxyCodeLine{│\ \ \ ├──\ verlet.cpp}
+\DoxyCodeLine{│\ \ \ └──\ world.cpp}
+\DoxyCodeLine{│}
+\DoxyCodeLine{├──\ scripts/}
+\DoxyCodeLine{│\ \ \ ├──\ plot\_orbit.py}
+\DoxyCodeLine{│\ \ \ └──\ \_\_init\_\_.py}
+\DoxyCodeLine{│}
+\DoxyCodeLine{├──\ data/\ \ \ \#\ auto-\/created\ on\ first\ run}
+\DoxyCodeLine{│\ \ \ └──\ orbit\_data.csv}
+\DoxyCodeLine{│}
+\DoxyCodeLine{└──\ CMakeLists.txt}
+
+\end{DoxyCode}
+
+
+\DoxyHorRuler{0}
+\hypertarget{md__r_e_a_d_m_e_autotoc_md6}{}\doxysection{\texorpdfstring{Build Instructions}{Build Instructions}}\label{md__r_e_a_d_m_e_autotoc_md6}
+\hypertarget{md__r_e_a_d_m_e_autotoc_md7}{}\doxysubsection{\texorpdfstring{1. Clone /\+ download the project}{1. Clone /\+ download the project}}\label{md__r_e_a_d_m_e_autotoc_md7}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{git\ clone\ <your-\/repo-\/url>}
+\DoxyCodeLine{cd\ TwoBody\_Problem}
+
+\end{DoxyCode}
+\hypertarget{md__r_e_a_d_m_e_autotoc_md8}{}\doxysubsection{\texorpdfstring{2. Create the data output directory}{2. Create the data output directory}}\label{md__r_e_a_d_m_e_autotoc_md8}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{mkdir\ -\/p\ data}
+
+\end{DoxyCode}
+\hypertarget{md__r_e_a_d_m_e_autotoc_md9}{}\doxysubsection{\texorpdfstring{3. Configure with CMake}{3. Configure with CMake}}\label{md__r_e_a_d_m_e_autotoc_md9}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{cmake\ -\/B\ build\ -\/DCMAKE\_BUILD\_TYPE=Release}
+
+\end{DoxyCode}
+
+
+\begin{quote}
+{\bfseries{Note:\+}} {\ttfamily CMake\+Lists.\+txt} must define {\ttfamily PROJECT\+\_\+\+ROOT} as a compile definition so the binary can locate the {\ttfamily data/\+} and {\ttfamily scripts/\+} directories. Ensure it contains something like:\+ 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{add\_compile\_definitions(PROJECT\_ROOT="{}\$\{CMAKE\_SOURCE\_DIR\}"{})}
+
+\end{DoxyCode}
+ \end{quote}
+\hypertarget{md__r_e_a_d_m_e_autotoc_md10}{}\doxysubsection{\texorpdfstring{4. Build}{4. Build}}\label{md__r_e_a_d_m_e_autotoc_md10}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{cmake\ -\/-\/build\ build}
+
+\end{DoxyCode}
+
+
+The compiled binary will be placed in {\ttfamily build/\+} (e.\+g. {\ttfamily build/\+\+Two\+Body\+\_\+\+Problem}).
+
+\DoxyHorRuler{0}
+\hypertarget{md__r_e_a_d_m_e_autotoc_md12}{}\doxysection{\texorpdfstring{Running the Simulation}{Running the Simulation}}\label{md__r_e_a_d_m_e_autotoc_md12}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{./build/TwoBody\_Problem}
+
+\end{DoxyCode}
+
+
+The program will:\+
+\begin{DoxyEnumerate}
+\item Initialise the star and planet with randomised orbital velocity
+\item Run {\bfseries{10,000 Verlet integration steps}}
+\item Export trajectory data to {\ttfamily data/\+orbit\+\_\+data.\+csv}
+\item Automatically invoke the Python plotter
+\end{DoxyEnumerate}
+
+Expected output:\+
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{Orbit\ data\ exported\ to:\ /path/to/project/data/orbit\_data.csv}
+\DoxyCodeLine{}
+\DoxyCodeLine{Launching\ Python\ plotter...}
+\DoxyCodeLine{Saved\ orbit\_path.png}
+
+\end{DoxyCode}
+
+
+\DoxyHorRuler{0}
+\hypertarget{md__r_e_a_d_m_e_autotoc_md14}{}\doxysection{\texorpdfstring{Running the Python Plotter Manually}{Running the Python Plotter Manually}}\label{md__r_e_a_d_m_e_autotoc_md14}
+If you want to re-\/plot without rerunning the simulation:\+
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{python3\ scripts/plot\_orbit.py\ data/orbit\_data.csv}
+
+\end{DoxyCode}
+
+
+This generates {\ttfamily orbit\+\_\+path.\+png} in your current working directory showing the orbital trajectory with the star at origin, the planet\textquotesingle{}s start/\+end positions, and the initial speed annotated.
+
+\DoxyHorRuler{0}
+\hypertarget{md__r_e_a_d_m_e_autotoc_md16}{}\doxysection{\texorpdfstring{Bug Fix Note}{Bug Fix Note}}\label{md__r_e_a_d_m_e_autotoc_md16}
+If you move the star away from the origin {\ttfamily (0, 0)}, make sure {\ttfamily update\+\_\+acceleration} in {\ttfamily verlet.\+cpp} uses the {\bfseries{relative displacement}} between the planet and the star — not the planet\textquotesingle{}s absolute position. See the fix:\+
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\textcolor{comment}{//\ verlet.cpp}}
+\DoxyCodeLine{Vec2\ update\_acceleration(\textcolor{keywordtype}{float}\ m,\ \textcolor{keywordtype}{float}\ distance,\ \textcolor{keyword}{const}\ Vec2\&\ planet\_pos,\ \textcolor{keyword}{const}\ Vec2\&\ star\_pos)\ \{}
+\DoxyCodeLine{\ \ \ \ \textcolor{keywordflow}{return}\ -\/1.f\ *\ (m\ /\ pow(distance,\ 3))\ *\ (planet\_pos\ -\/\ star\_pos);}
+\DoxyCodeLine{\}}
+
+\end{DoxyCode}
+
+
+Without this, the planet will fall straight into the star whenever the star is not at the origin.
+
+\DoxyHorRuler{0}
+\hypertarget{md__r_e_a_d_m_e_autotoc_md18}{}\doxysection{\texorpdfstring{Configuration}{Configuration}}\label{md__r_e_a_d_m_e_autotoc_md18}
+Key simulation parameters are set in {\ttfamily world.\+cpp}:\+
+
+
+\begin{DoxyTable}{3}{}{}{1}
+\SetCell{c,bg=\tableheadbgcolor,font=\bfseries}Parameter  &\SetCell{c,bg=\tableheadbgcolor,font=\bfseries}Default  &\SetCell{c,bg=\tableheadbgcolor,font=\bfseries}Description  \\
+Star mass  &{\ttfamily 1000}  &Gravitational source mass  \\
+Planet mass  &{\ttfamily 20}  &Orbiting body mass (negligible in force calc)  \\
+Planet start position  &{\ttfamily (100, 80)}  &Initial XY coordinates  \\
+Timestep {\ttfamily dt}  &{\ttfamily 1}  &Integration step size  \\
+Steps  &{\ttfamily 10000}  &Total integration steps  \\
+\end{DoxyTable}
+
+
+Initial orbital velocity is randomised between {\ttfamily 0.\+5} and the escape velocity each run. 

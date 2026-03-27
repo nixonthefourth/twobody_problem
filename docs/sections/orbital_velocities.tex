@@ -1,62 +1,58 @@
 \section{Orbital Velocities}
-This part determines what kind of velocity the orbiting object has. It's worth noting, that in a two-body setup, the velocity of the center mass can be disregarded. Based on the values produced, we can create a table of velocities and deduce the most appropirate for our setup. The actual software chooses the results within the uniform real distribution in order to give a variety of results.
 
-\subsection{Circular Velocity}
+With the initial separation $r = 125$ and star mass $M = 1000$ established, we can characterise all relevant velocity thresholds for the planet's orbit. These thresholds determine the qualitative shape of the trajectory and inform the simulation's random velocity selection.
 
-Step 1, write out the equation:
+\subsection{Circular Orbital Velocity}
 
-\begin{equation}
-\mathbf{v_c} = \sqrt{\frac{GM}{r}}
-\end{equation}
-
-Step 2, substitute values:
+The circular orbital velocity is the speed at which the gravitational centripetal acceleration exactly provides the centripetal force required to maintain a circular path:
 
 \begin{equation}
-\mathbf{v_c} = \sqrt{\frac{1 * 1000}{125}}
+v_c = \sqrt{\frac{GM}{r}} = \sqrt{\frac{1 \times 1000}{125}} = \sqrt{8} = 2\sqrt{2} \approx 2.83
 \end{equation}
 
-Step 3, result:
-
-\begin{equation}
-\mathbf{v_c} = 2\sqrt{2}
-\end{equation}
+At this speed, the planet would trace a perfect circle of radius $r = 125$ around the star.
 
 \subsection{Escape Velocity}
 
-Step 1, write out the equation:
+The escape velocity is the minimum speed needed for the planet to escape the star's gravitational field entirely, reaching infinity with zero remaining kinetic energy:
 
 \begin{equation}
-\mathbf{v_e} = \sqrt{\frac{2GM}{r}}
+v_e = \sqrt{\frac{2GM}{r}} = \sqrt{\frac{2 \times 1000}{125}} = \sqrt{16} = 4
 \end{equation}
 
-Step 2, substitute values:
+As expected, $v_e = \sqrt{2}\,v_c \approx 1.414 \times 2.83 = 4$, confirming the general relationship between circular and escape velocities.
 
-\begin{equation}
-\mathbf{v_e} = \sqrt{\frac{2 * 1000}{125}}
-\end{equation}
+\subsection{Velocity Classification Table}
 
-Step 3, result:
+Based on these two critical speeds, all possible orbital behaviours can be classified as follows:
 
-\begin{equation}
-\mathbf{v_e} = 4
-\end{equation}
-
-Hence, the velocity table can now be produced.
-
-\subsection{Velocity Table}
+\begin{center}
 \begin{tabular}{l c}
 \toprule
-Velocities $v$ & Orbital Behaviour \\
+Speed $v$ & Orbital Behaviour \\
 \midrule
-$0$ & Fall in the center mass \\
-$0< v < 2\sqrt{2}$ & Elliptical Orbit \\
-$2\sqrt{2}$ & Circular Orbit \\
-$2.83 < v < 4$ & Elliptical Orbit \\
-$v = 4$ & Parabolic Orbit \\
-$v > 4$ & Hyperbolic Escape \\
+$v = 0$ & Planet falls directly into the star \\
+$0 < v < 2\sqrt{2}$ & Elliptical orbit (sub-circular) \\
+$v = 2\sqrt{2} \approx 2.83$ & Circular orbit \\
+$2\sqrt{2} < v < 4$ & Elliptical orbit (super-circular) \\
+$v = 4$ & Parabolic trajectory (marginally unbound) \\
+$v > 4$ & Hyperbolic escape \\
 \bottomrule
 \end{tabular}
+\end{center}
 
-\vspace{1cm}
+\vspace{0.5cm}
 
-Let $v=2.8$, hence the orbit is \underline{elliptical}.
+The two elliptical regimes differ in their eccentricity. Below the circular velocity the orbit is elongated inward (periapsis is closer to the star than the starting position); above it the orbit is elongated outward (apoapsis is further than the starting position).
+
+\subsection{Velocity Selection in the Simulation}
+
+Rather than fixing a single initial speed, the simulation uses a uniform random draw from the interval $[0.5,\; v_e]$. This is implemented in \texttt{physics::choose\_vel} using the Mersenne Twister engine for reproducibility and quality randomness:
+
+\begin{equation}
+v_0 \sim \mathcal{U}(0.5,\; 4)
+\end{equation}
+
+The lower bound of $0.5$ prevents near-zero velocities that would cause an immediate near-collision. Any value below $v_e = 4$ guarantees a bound orbit; values above $v_e$ are excluded by the distribution's upper bound, so the planet cannot escape. In practice, each run of the simulation produces a qualitatively different orbit — from a highly elliptical path to one that approaches circular — making it straightforward to observe the full range of Keplerian behaviour by simply re-running the program.
+
+For the worked numerical examples in the subsequent sections, a representative speed of $v_0 = 2.8$ is used, placing the orbit in the super-circular elliptical regime just below the escape threshold.

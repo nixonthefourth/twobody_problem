@@ -1,24 +1,59 @@
-\section{Sumplectic Integrators}
-\subsection{Velocity Verlet Algorithm}
+\section{Symplectic Integrators}
 
-The algorithm works by the principles of updated position, acceleration and velocity to change the position of an object both in 2D and 3D space with energy conserved.
+\subsection{Motivation}
 
-\subsection{Formulae}
-\subsection{Position Update}
+Numerically integrating the equations of motion of an orbiting body is a non-trivial task. A naïve approach — such as the simple Euler method — accumulates energy errors over time, causing simulated orbits to either spiral inward or drift outward, even though the true Newtonian orbit is a closed, energy-conserving ellipse.
+
+A better class of methods, known as \emph{symplectic integrators}, preserves the geometric structure of Hamiltonian mechanics. Crucially, they conserve a quantity that is very close to the true total energy over long integration times, preventing the secular drift that plagues non-symplectic methods. The \emph{Velocity Verlet} algorithm is the simplest and most widely used symplectic integrator, and is the method employed in this simulation.
+
+\subsection{The Velocity Verlet Algorithm}
+
+The algorithm advances the state of the system — position $\vec{r}$, velocity $\vec{v}$, and acceleration $\vec{a}$ — by a fixed timestep $dt$ in three sequential sub-steps.
+
+\subsubsection{Step 1: Position Update}
+
+The new position at timestep $n+1$ is computed using the current position, velocity, and acceleration:
+
 \begin{equation}
-\mathbf{\vec{r_{n+1}}} = \vec{r_n} + \vec{v}*dt + \frac{1}{2}*\vec{a_n}*dt^2
+\vec{r}_{n+1} = \vec{r}_n + \vec{v}_n\,dt + \frac{1}{2}\,\vec{a}_n\,dt^2
 \end{equation}
 
-\subsection{Acceleration Update}
+This is equivalent to a second-order Taylor expansion of the position. The $\frac{1}{2}\vec{a}\,dt^2$ term distinguishes Verlet from the simple Euler method ($\vec{r}_{n+1} = \vec{r}_n + \vec{v}_n\,dt$) and provides second-order accuracy in the position update.
+
+\subsubsection{Step 2: Acceleration Update}
+
+With the new position $\vec{r}_{n+1}$ known, the updated gravitational acceleration is recalculated from the force law:
+
 \begin{equation}
-\mathbf{\vec{a_{n+1}}} = -G * \frac{m}{|\vec{r^3}|} * (\vec{r_{planet}} - \vec{r_{star}})
+\vec{a}_{n+1} = -\frac{GM}{|\vec{r}_{n+1} - \vec{r}_\star|^3}\,(\vec{r}_{n+1} - \vec{r}_\star)
 \end{equation}
 
-\subsection{Velocity Update}
+This step uses the \emph{updated} planet position but the \emph{fixed} star position, correctly computing the new gravitational pull after the planet has moved.
+
+\subsubsection{Step 3: Velocity Update}
+
+Finally, the velocity is updated using the \emph{average} of the old and new accelerations:
+
 \begin{equation}
-\mathbf{\vec{v_{n+1}}} = \vec{v_n} + \frac{(\vec{a_n} + \vec{a_{n+1}})*dt}{2}
+\vec{v}_{n+1} = \vec{v}_n + \frac{1}{2}\,(\vec{a}_n + \vec{a}_{n+1})\,dt
 \end{equation}
 
-\subsection{How this works}
+Using the mean acceleration over the interval, rather than just the initial acceleration (as Euler would), is what gives Velocity Verlet its superior energy conservation properties.
 
-After following this algorithm over a chosen timestep (which could be in thousands and millions), we will see a consistent update of the position, acceleration and velocity with the energy conserved over a chosen orbit of initially defined velocity.
+\subsection{Why Symplectic Integration Matters}
+
+The defining property of a symplectic integrator is that it preserves the \emph{symplectic structure} of the Hamiltonian phase space, which in practice means the total mechanical energy of the simulated system does not drift monotonically over time. Instead, it oscillates around the true value by a small, bounded amount. For an orbital simulation run over thousands or millions of steps, this is essential: a non-symplectic method might produce a visually plausible orbit for a few hundred steps before the energy error accumulates enough to deform or destroy the trajectory.
+
+\subsection{Implementation Summary}
+
+The simulation runs the Velocity Verlet loop for 10,000 timesteps with $dt = 1$. At each step the following operations are performed in order:
+
+\begin{enumerate}
+    \item Compute new planet position from $(\vec{r}_n,\, \vec{v}_n,\, \vec{a}_n)$.
+    \item Recompute the planet-star distance from the new position.
+    \item Compute new acceleration from the updated distance and position.
+    \item Compute new velocity from both old and new accelerations.
+    \item Record the snapshot $(\vec{r}_{n+1},\, \vec{v}_{n+1},\, \vec{a}_{n+1})$ for CSV export.
+\end{enumerate}
+
+After all 10,000 steps, the trajectory data is written to \texttt{orbit\_data.csv} and visualised via the accompanying Python plotter, producing the orbital path shown in the output figure.
